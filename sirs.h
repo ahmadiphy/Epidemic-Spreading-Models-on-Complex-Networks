@@ -20,6 +20,7 @@ public:
     void new_sirs(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
     void new_sirs2(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
     void new_sirs3(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
+ private:
     double avgI;
     int act;
 };
