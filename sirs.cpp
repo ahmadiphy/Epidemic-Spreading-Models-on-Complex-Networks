@@ -1656,3 +1656,7 @@ void SIRS::new_sirs3(int rr, double probAlpha,double probBeta,double teta,int ll
 
 //
 //
+double SIRS::get_avgI()
+{
+    return avgI;
+}

@@ -5,14 +5,6 @@ RegN::RegN()
 {
 
 }
-//
-//
-void RegN::Reg0(int nm, int sm, iMatrix &m1)
-{
-    Hire testh;
-    int N=nm*sm,k=sm-1;
-    Reg1(N,k,m1);
-}
 
 //
 //

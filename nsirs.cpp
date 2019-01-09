@@ -16,7 +16,6 @@ void NSIRS::ns0(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        //uniform_int_distribution<> distall(0,llnn-1);
         ostringstream fn;
         vector<int> dy(llnn);
         vector<int> infects;

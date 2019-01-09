@@ -32,11 +32,8 @@ int main()
     }
     //|========================================================================
     //
-    SIRS s1;
     Matrixf mf1;
-    RegN rn1;
-    SFn sf1;
-    SI si1;
+    ERn rn1;
     NewDy nd1;
     //
     ostringstream infof;
@@ -94,7 +91,7 @@ int main()
             {
                 cout<<"network : "<<net<<"  landa = "<<mpv<<" ans:"<<i<<endl;
                 nd1.D00(10000000,mpv,1,N,a,1000,i,net);
-                suminf=suminf+nd1.avgI;
+                suminf=suminf+nd1.get_avgI();
             }
             avginf=suminf/Nans;
             outM<< mpv <<' '<<avginf<<endl;
@@ -116,7 +113,7 @@ int main()
     gmtm = gmtime(&now);
     dt = asctime(gmtm);
     outinf<<endl;
-    outinf<<"The Run End date and time is:"<< dt << endl;//iran date and time
+    outinf<<"The Run End date and time is:"<< dt << endl;//date and time in iran
     outinf.close();
 }
 

@@ -9,6 +9,8 @@ public:
     SI();
     void Check_SI(int llnn, iMatrix& ac);
     void ECheck_SI(int llnn, iMatrix& ac);
+    int get_Check_result();
+private:
     int Check_result;
 };
 
