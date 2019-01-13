@@ -24,8 +24,6 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
         vector<double> xi(llnn);
         Matrixf mat1;
         mat1.vDeg(llnn,vdeg,aa);
-        //vector<int> dy3(llnn);
-        //vector<int> dy4(llnn);
 #pragma omp parallel
         {
 #pragma omp for
@@ -33,13 +31,6 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
             {
                 dy1[i]=0;
                 dy2[i]=0;
-                /*dy3[i]=0;
-            dy4[i]=0;
-            for(int dy4i=0;dy4i<llnn;++dy4i)
-                dy4[#pragma omp parallel
-        {
-#pragma omp fori]=dy4[i]+aa[i][dy4i];
-                */
             }
         }
         int c1=0,cr=0;
@@ -48,19 +39,13 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
             if(dy1[c1]==0)
             {
                 dy1[c1]=1;
-                //dy3[c1]++;
                 cr++;
             }
         }while (cr<1);
 
         //
         fns<<"./data/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
-        //fnss<<"./data/r_fraction_"<<rr<<"_"<<probAlpha<<".dat";
-        //fnsss<<"./data/s_fraction_"<<rr<<"_"<<probAlpha<<".dat";
         ofstream out1(fns.str().c_str(),ios_base::binary);
-        //ofstream out2(fnss.str().c_str(),ios_base::binary);
-        //ofstream out3(fnsss.str().c_str(),ios_base::binary);
-        //
         int isum=0,isumr=0,isums=0;
         for(int ii=0;ii<rr;++ii)
         {
@@ -83,9 +68,8 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
             }
             double var=0;
             var=mat1.varianceVec(llnn,vdeg);
-            // cout<<ii<<endl;
             isum=0,isumr=0,isums=0;
-            vector<double> probel(llnn); //---------------------------------------------
+            vector<double> probel(llnn);
 #pragma omp parallel
             {
 #pragma omp for
@@ -102,17 +86,12 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
                         if(probel[m]<lprob)
                         {
                             dy2[m]=1;
-                            //dy3[j]++;
                         }
                     }
                 }
 
             }
             //---------------------------------------------
-            //
-            //#pragma omp parallel
-            //{
-            //#pragma omp parallel for
             for(int kk=0;kk<llnn;++kk)
             {
                 if(dy1[kk]>0)
@@ -120,34 +99,17 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
                 if(dy1[kk]==0)
                     dy1[kk]=dy1[kk]+dy2[kk];
                 dy2[kk]=0;
-                //double r2s=0;
-                //r2s=dist1(gen);
                 if(dy1[kk]>=4)
                     dy1[kk]=0;
                 if(dy1[kk]==1)
                 {
                     isum=isum+1;
-                    //dy3[kk]++;
                 }
-                /*
-            if(dy1[kk]>1)
-                isumr=isumr+1;
-            if(dy1[kk]==0)
-                isums=isums+1;
-                */
             }
-            //
-            //}
-            //cout<<"ii= "<<ii<<endl;
-            //cout<<isum<<endl;
-            double f1=0,f2=0,f3=0;//,f4=0,f44=0,f5=0,f55=0;
+            double f1=0,f2=0,f3=0;
             f1=isum;
-            //f4=isumr;
-            //f5=isums;
             f2=llnn;
             f3=f1/f2;
-            //f44=f4/f2;
-            //f55=f5/f2;
             if(f3==0)
             {
                 avgI=0;
@@ -158,14 +120,8 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
             int um=rr-trr;
             if(ii >= um)
                 sumOFf=sumOFf+f3;
-            //infectionF=f3;
-            //cout<<f3<<endl;
-            out1<< ii+1 <<' '<<f3<<endl;//' '<<f44<<' '<<f55<<endl;
-            //out2<< ii+1 <<' '<<f44<<endl;
-            //out3<< ii+1 <<' '<<f55<<endl;
+            out1<< ii+1 <<' '<<f3<<endl;
         }
-        //for(int dyi=0;dyi<llnn;++dyi)
-        //out2<<dy4[dyi]<<' '<<dy3[dyi]<<endl;
         avgI=sumOFf/trr;
     }else
     {
@@ -190,8 +146,6 @@ void SIRS::NSLdynamic1(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
         vector<double> vdeg(llnn);
         Matrixf mat1;
         mat1.vDeg(llnn,vdeg,aa);
-        //vector<int> dy3(llnn);
-        //vector<int> dy4(llnn);
 #pragma omp parallel
         {
 #pragma omp for
@@ -199,11 +153,6 @@ void SIRS::NSLdynamic1(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
             {
                 dy1[i]=0;
                 dy2[i]=0;
-                /*dy3[i]=0;
-            dy4[i]=0;
-            for(int dy4i=0;dy4i<llnn;++dy4i)
-                dy4[i]=dy4[i]+aa[i][dy4i];
-                */
             }
         }
         int c1=0,cr=0;
@@ -212,7 +161,6 @@ void SIRS::NSLdynamic1(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
             if(dy1[c1]==0)
             {
                 dy1[c1]=1;
-                //dy3[c1]++;
                 cr++;
             }
         }while (cr<1);
@@ -1324,21 +1272,10 @@ void SIRS::new_sirs(int rr, double probAlpha,double probBeta,double teta,int lln
                         }
                     }
                 }
-            }//else if(actt<=((probAlpha+teta)/(probAlpha+probBeta+teta)))
-            //{
+            }
             infects.erase(infects.begin()+iactt);
             dy[infector]=2;
             recovers.push_back(infector);
-            /*}else
-            {
-                infects.erase(infects.begin()+iactt);
-                dy[infector]=0;
-            }
-            */
-            //---------------------------------------------
-            //#pragma omp parallel
-            //          {
-            //#pragma omp for
             uniform_int_distribution<> recs(0,(recovers.size()-1));
             double recovector=0,ractt=0,ract=0;
             ractt=recs(gen);
@@ -1401,30 +1338,15 @@ void SIRS::new_sirs2(int rr, double probAlpha,double probBeta,double teta,int ll
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        //uniform_int_distribution<> distall(0,llnn-1);
         ostringstream fn;
         vector<int> dy(llnn);
         vector<int> infects;
         vector<int> recovers;
-        //vector<int> resus;
         for(int i=0;i<llnn;++i)
         {
             dy[i]=1;
             infects.push_back(i);
         }
-        /*
-    int ksum=0;
-    int c1=0;
-    do{
-        c1=distall(gen);
-        if(dy[c1]==0)
-        {
-            dy[c1]=1;
-            infects.push_back(c1);
-            ksum++;
-        }
-    }while(ksum<llnn/2);
-    */
         //=============================================================
         fn<<"./data/"<<probAlpha<<"/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
         ofstream out1(fn.str().c_str(),ios_base::binary);
@@ -1466,9 +1388,6 @@ void SIRS::new_sirs2(int rr, double probAlpha,double probBeta,double teta,int ll
             infects.erase(infects.begin()+iactt);
             cout<<"cdc"<<endl;
             //---------------------------------------------
-            //#pragma omp parallel
-            //          {
-            //#pragma omp for
             uniform_int_distribution<> recs(0,(recovers.size()-1));
             double recovector=0,ractt=0,ract=0;
             ractt=recs(gen);
@@ -1493,7 +1412,7 @@ void SIRS::new_sirs2(int rr, double probAlpha,double probBeta,double teta,int ll
             }
             recovers.erase(recovers.begin()+ractt);
             dy[infector]=0;
-            //          }
+       
             //---------------------------------------------
             isum=infects.size();
             double f1=0,f2=0,f3=0;
