@@ -894,7 +894,7 @@ void SIRS::NSdynamic3(int rr, double probAlpha,double probBeta,double teta,int l
 }
 //
 //
-void SIRS::article_sis(int rr, double probAlpha,double probBeta,int llnn, iMatrix &aa,int trr,int ln)
+void SIRS::a_sis(int rr, double probAlpha,double probBeta,int llnn, iMatrix &aa,int trr,int ln)
 {
     act=0;
     if(trr<rr)
@@ -903,30 +903,14 @@ void SIRS::article_sis(int rr, double probAlpha,double probBeta,int llnn, iMatri
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        //uniform_int_distribution<> distall(0,llnn-1);
         ostringstream fn;
         vector<int> dy(llnn);
         vector<int> infects;
-        //vector<int> recovers;
-        //vector<int> resus;
         for(int i=0;i<llnn;++i)
         {
             dy[i]=1;
             infects.push_back(i);
         }
-        /*
-    int ksum=0;
-    int c1=0;
-    do{
-        c1=distall(gen);
-        if(dy[c1]==0)
-        {
-            dy[c1]=1;
-            infects.push_back(c1);
-            ksum++;
-        }
-    }while(ksum<llnn/2);
-    */
         //=============================================================
         fn<<"./data/"<<probAlpha<<"/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
         ofstream out1(fn.str().c_str(),ios_base::binary);
@@ -988,7 +972,7 @@ void SIRS::article_sis(int rr, double probAlpha,double probBeta,int llnn, iMatri
 }
 //
 //
-void SIRS::article_sirs(int rr, double probAlpha,double probBeta,double teta,int llnn, iMatrix &aa,int trr,int ln)
+void SIRS::a_sirs(int rr, double probAlpha,double probBeta,double teta,int llnn, iMatrix &aa,int trr,int ln)
 {
     act=0;
     if(trr<rr)
@@ -997,30 +981,14 @@ void SIRS::article_sirs(int rr, double probAlpha,double probBeta,double teta,int
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        //uniform_int_distribution<> distall(0,llnn-1);
         ostringstream fn;
         vector<int> dy(llnn);
         vector<int> infects;
-        //vector<int> recovers;
-        //vector<int> resus;
         for(int i=0;i<llnn;++i)
         {
             dy[i]=1;
             infects.push_back(i);
         }
-        /*
-    int ksum=0;
-    int c1=0;
-    do{
-        c1=distall(gen);
-        if(dy[c1]==0)
-        {
-            dy[c1]=1;
-            infects.push_back(c1);
-            ksum++;
-        }
-    }while(ksum<llnn/2);
-    */
         //=============================================================
         fn<<"./data/"<<probAlpha<<"/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
         ofstream out1(fn.str().c_str(),ios_base::binary);
@@ -1055,9 +1023,6 @@ void SIRS::article_sirs(int rr, double probAlpha,double probBeta,double teta,int
             infects.erase(infects.begin()+iactt);
             dy[infector]=2;
             //---------------------------------------------
-            //#pragma omp parallel
-            //          {
-            //#pragma omp for
             for(int k=0;k<llnn;++k)
             {
                 if(dy[k]==2)
@@ -1068,7 +1033,7 @@ void SIRS::article_sirs(int rr, double probAlpha,double probBeta,double teta,int
                         dy[k]=0;
                 }
             }
-            //          }
+            //
             //---------------------------------------------
             isum=infects.size();
             double f1=0,f2=0,f3=0;
@@ -1096,7 +1061,7 @@ void SIRS::article_sirs(int rr, double probAlpha,double probBeta,double teta,int
 }
 //
 //
-void SIRS::article_sirsE(int rr, double probAlpha,double probBeta,double teta,int llnn, iMatrix &aa,int trr,int ln)
+void SIRS::a_sirsE(int rr, double probAlpha,double probBeta,double teta,int llnn, iMatrix &aa,int trr,int ln)
 {
     act=0;
     if(trr<rr)
@@ -1105,30 +1070,15 @@ void SIRS::article_sirsE(int rr, double probAlpha,double probBeta,double teta,in
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        //uniform_int_distribution<> distall(0,llnn-1);
         ostringstream fn;
         vector<int> dy(llnn);
         vector<int> infects;
         vector<int> recovers;
-        //vector<int> resus;
         for(int i=0;i<llnn;++i)
         {
             dy[i]=1;
             infects.push_back(i);
         }
-        /*
-    int ksum=0;
-    int c1=0;
-    do{
-        c1=distall(gen);
-        if(dy[c1]==0)
-        {
-            dy[c1]=1;
-            infects.push_back(c1);
-            ksum++;
-        }
-    }while(ksum<llnn/2);
-    */
         //=============================================================
         fn<<"./data/"<<probAlpha<<"/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
         ofstream out1(fn.str().c_str(),ios_base::binary);
@@ -1164,9 +1114,6 @@ void SIRS::article_sirsE(int rr, double probAlpha,double probBeta,double teta,in
             dy[infector]=2;
             recovers.push_back(infector);
             //---------------------------------------------
-            //#pragma omp parallel
-            //          {
-            //#pragma omp for
             for(int k=0;k<recovers.size();++k)
             {
                 int kk=recovers[k];
@@ -1181,7 +1128,7 @@ void SIRS::article_sirsE(int rr, double probAlpha,double probBeta,double teta,in
                     }
                 }
             }
-            //          }
+            //
             //---------------------------------------------
             isum=infects.size();
             double f1=0,f2=0,f3=0;
@@ -1218,30 +1165,15 @@ void SIRS::new_sirs(int rr, double probAlpha,double probBeta,double teta,int lln
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        //uniform_int_distribution<> distall(0,llnn-1);
         ostringstream fn;
         vector<int> dy(llnn);
         vector<int> infects;
         vector<int> recovers;
-        //vector<int> resus;
         for(int i=0;i<llnn;++i)
         {
             dy[i]=1;
             infects.push_back(i);
         }
-        /*
-    int ksum=0;
-    int c1=0;
-    do{
-        c1=distall(gen);
-        if(dy[c1]==0)
-        {
-            dy[c1]=1;
-            infects.push_back(c1);
-            ksum++;
-        }
-    }while(ksum<llnn/2);
-    */
         //=============================================================
         fn<<"./data/"<<probAlpha<<"/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
         ofstream out1(fn.str().c_str(),ios_base::binary);
