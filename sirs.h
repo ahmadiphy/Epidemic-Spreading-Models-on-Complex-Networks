@@ -14,9 +14,9 @@ public:
     void NSLdynamic2(int rr, double probAlpha, int llnn, iMatrix &aa, int trr,int ln);
     void NSdynamic2(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa, int trr, int ln);
     void NSdynamic3(int rr, double probAlpha, double probBeta,double teta, int llnn, iMatrix &aa, int trr, int ln);
-    void article_sis(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa, int trr, int ln);
-    void article_sirs(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
-    void article_sirsE(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
+    void a_sis(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa, int trr, int ln);
+    void a_sirs(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
+    void a_sirsE(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
     void new_sirs(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
     void new_sirs2(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
     void new_sirs3(int rr, double probAlpha, double probBeta, double teta, int llnn, iMatrix &aa, int trr, int ln);
