@@ -17,7 +17,7 @@ void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
         uniform_int_distribution<> distall(0,llnn-1);
-        ostringstream fns;//,fnss,fnsss;
+        ostringstream fns;
         vector<int> dy1(llnn);
         vector<int> dy2(llnn);
         vector<double> vdeg(llnn);
@@ -140,7 +140,7 @@ void SIRS::NSLdynamic1(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
         uniform_int_distribution<> distall(0,llnn-1);
-        ostringstream fns;//,fnss,fnsss;
+        ostringstream fns;//
         vector<int> dy1(llnn);
         vector<int> dy2(llnn);
         vector<double> vdeg(llnn);
@@ -514,8 +514,6 @@ void SIRS::NSdynamic(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,int 
             f1=isum;
             f2=llnn;
             f3=f1/f2;
-            //f44=f4/f2;
-            //f55=f5/f2;
             if(f3==0)
             {
                 avgI=0;
@@ -526,14 +524,8 @@ void SIRS::NSdynamic(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,int 
             int um=rr-trr;
             if(ii >= um)
                 sumOFf=sumOFf+f3;
-            //infectionF=f3;
-            //cout<<f3<<endl;
-            out1<< ii+1 <<' '<<f3<<endl;//' '<<f44<<' '<<f55<<endl;
-            //out2<< ii+1 <<' '<<f44<<endl;
-            //out3<< ii+1 <<' '<<f55<<endl;
+            out1<< ii+1 <<' '<<f3<<endl;
         }
-        //for(int dyi=0;dyi<llnn;++dyi)
-        //out2<<dy4[dyi]<<' '<<dy3[dyi]<<endl;
         avgI=sumOFf/trr;
     }else
     {
@@ -552,11 +544,10 @@ void SIRS::NSdynamic2(int rr, double probAlpha,double probBeta,int llnn, iMatrix
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
         uniform_int_distribution<> distall(0,llnn-1);
-        ostringstream fns;//,fnss,fnsss;
+        ostringstream fns;
         vector<int> dy1(llnn);
         vector<int> dy2(llnn);
         vector<int> dy3(llnn);
-        //vector<int> dy4(llnn);
 #pragma omp parallel
         {
 #pragma omp for
@@ -564,38 +555,15 @@ void SIRS::NSdynamic2(int rr, double probAlpha,double probBeta,int llnn, iMatrix
             {
                 dy1[i]=1;
                 dy2[i]=1;
-                //dy3[i]=1;
-                /*dy4[i]=0;
-            for(int dy4i=0;dy4i<llnn;++dy4i)
-                dy4[i]=dy4[i]+aa[i][dy4i];
-                */
             }
         }
-        /*
-        int c1=0,cr=0;
-        do{
-            c1=distall(gen);
-            if(dy1[c1]==0)
-            {
-                dy1[c1]=1;
-                //dy3[c1]++;
-                cr++;
-            }
-        }while (cr<1);
-        */
-        //
         fns<<"./data/"<<probAlpha<<"/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
-        //fnss<<"./data/r_fraction_"<<rr<<"_"<<probAlpha<<".dat";
-        //fnsss<<"./data/s_fraction_"<<rr<<"_"<<probAlpha<<".dat";
         ofstream out1(fns.str().c_str(),ios_base::binary);
-        //ofstream out2(fnss.str().c_str(),ios_base::binary);
-        //ofstream out3(fnsss.str().c_str(),ios_base::binary);
         //
         int isum=0,isumr=0,isums=0;
         for(int ii=0;ii<rr;++ii)
         {
             act=ii;
-            // cout<<ii<<endl;
             isum=0,isumr=0,isums=0;
             //
             int state=0;
@@ -657,14 +625,8 @@ void SIRS::NSdynamic2(int rr, double probAlpha,double probBeta,int llnn, iMatrix
             int um=rr-trr;
             if(ii >= um)
                 sumOFf=sumOFf+f3;
-            //infectionF=f3;
-            //cout<<f3<<endl;
-            out1<< ii+1 <<' '<<f3<<endl;//' '<<f44<<' '<<f55<<endl;
-            //out2<< ii+1 <<' '<<f44<<endl;
-            //out3<< ii+1 <<' '<<f55<<endl;
+            out1<< ii+1 <<' '<<f3<<endl;
         }
-        //for(int dyi=0;dyi<llnn;++dyi)
-        //out2<<dy4[dyi]<<' '<<dy3[dyi]<<endl;
         avgI=sumOFf/trr;
     }else
     {
@@ -683,11 +645,10 @@ void SIRS::NSdynamic3(int rr, double probAlpha,double probBeta,double teta,int l
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
         uniform_int_distribution<> distall(0,llnn-1);
-        ostringstream fns;//,fnss,fnsss;
+        ostringstream fns;
         vector<int> dy1(llnn);
         vector<int> dy2(llnn);
         vector<int> dy3(llnn);
-        //vector<int> dy4(llnn);
 #pragma omp parallel
         {
 #pragma omp for
@@ -695,38 +656,16 @@ void SIRS::NSdynamic3(int rr, double probAlpha,double probBeta,double teta,int l
             {
                 dy1[i]=1;
                 dy2[i]=0;
-                //dy3[i]=1;
-                /*dy4[i]=0;
-            for(int dy4i=0;dy4i<llnn;++dy4i)
-                dy4[i]=dy4[i]+aa[i][dy4i];
-                */
             }
         }
-        /*
-        int c1=0,cr=0;
-        do{
-            c1=distall(gen);
-            if(dy1[c1]==0)
-            {
-                dy1[c1]=1;
-                //dy3[c1]++;
-                cr++;
-            }
-        }while (cr<1);
-        */
         //
         fns<<"./data/"<<probAlpha<<"/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
-        //fnss<<"./data/r_fraction_"<<rr<<"_"<<probAlpha<<".dat";
-        //fnsss<<"./data/s_fraction_"<<rr<<"_"<<probAlpha<<".dat";
         ofstream out1(fns.str().c_str(),ios_base::binary);
-        //ofstream out2(fnss.str().c_str(),ios_base::binary);
-        //ofstream out3(fnsss.str().c_str(),ios_base::binary);
         //
         int isum=0,isumr=0,isums=0;
         for(int ii=0;ii<rr;++ii)
         {
             act=ii;
-            // cout<<ii<<endl;
             isum=0,isumr=0,isums=0;
             //
             int state=0;
@@ -792,14 +731,8 @@ void SIRS::NSdynamic3(int rr, double probAlpha,double probBeta,double teta,int l
             int um=rr-trr;
             if(ii >= um)
                 sumOFf=sumOFf+f3;
-            //infectionF=f3;
-            //cout<<f3<<endl;
-            out1<< ii+1 <<' '<<f3<<endl;//' '<<f44<<' '<<f55<<endl;
-            //out2<< ii+1 <<' '<<f44<<endl;
-            //out3<< ii+1 <<' '<<f55<<endl;
+            out1<< ii+1 <<' '<<f3<<endl;
         }
-        //for(int dyi=0;dyi<llnn;++dyi)
-        //out2<<dy4[dyi]<<' '<<dy3[dyi]<<endl;
         avgI=sumOFf/trr;
     }else
     {
