@@ -32,7 +32,6 @@ void NSIRS::ns0(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa
         int isum=0;
         for(int ii=0;ii<rr;++ii)
         {
-            //cout<<"hihihi"<<endl;
             act=ii;
             isum=0;
             int isize=infects.size();
@@ -65,9 +64,7 @@ void NSIRS::ns0(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa
 
             }
             infects.shrink_to_fit();
-            //cout<<"hihihi"<<endl;
             //--------------------------------------
-            //*-*-*-*-*-*-*-*-*-*-*-*-*-*
             int ninf=ninfects.size();
             for(int ni=0;ni<ninf;++ni)
             {
@@ -99,7 +96,7 @@ void NSIRS::ns0(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa
         avgI=sumOFf/trr;
     }else
     {
-        cout<<"SIRS stoped!"<<endl<<"avrage loop is biger than loop try."<<endl;
+        cout<<"SIRS stoped!"<<endl<<"avrage loop is larger than loop try."<<endl;
     }
 }
 //
@@ -113,7 +110,6 @@ void NSIRS::ns1(int rr, double probAlpha, double probBeta, double teta, int llnn
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        //uniform_int_distribution<> distall(0,llnn-1);
         ostringstream fn;
         vector<int> dy(llnn);
         vector<int> infects;
@@ -131,7 +127,6 @@ void NSIRS::ns1(int rr, double probAlpha, double probBeta, double teta, int llnn
         int isum=0;
         for(int ii=0;ii<rr;++ii)
         {
-            //cout<<"hihihi"<<endl;
             act=ii;
             isum=0;
             int isize=infects.size();
@@ -155,13 +150,10 @@ void NSIRS::ns1(int rr, double probAlpha, double probBeta, double teta, int llnn
                         }
                     }
                 }
-                //cout<<"loob"<<ii<<"--"<<iactt<<endl;
                 infects.erase(infects.begin()+iactt);
                 dy[infector]=2;
-                //cout<<"loob"<<ii<<"--"<<iactt<<endl;
                 recovers.push_back(infector);
             }
-            //cout<<"hihihi"<<endl;
             //--------------------------------------
             int k=0;
             while(k<recovers.size())
@@ -213,7 +205,7 @@ void NSIRS::ns1(int rr, double probAlpha, double probBeta, double teta, int llnn
         avgI=sumOFf/trr;
     }else
     {
-        cout<<"SIRS stoped!"<<endl<<"avrage loop is biger than loop try."<<endl;
+        cout<<"SIRS stoped!"<<endl<<"avrage loop is larger than loop try."<<endl;
     }
 }
 //
@@ -228,7 +220,7 @@ void NSIRS::ns2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,int ln)
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
         uniform_int_distribution<> distall(0,llnn-1);
-        ostringstream fns;//,fnss,fnsss;
+        ostringstream fns;
         vector<int> dy1(llnn);
         vector<int> infects;
         vector<int> ninfects;
@@ -283,7 +275,6 @@ void NSIRS::ns2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,int ln)
                 infects.erase(infects.begin()+0);
                 recovers.push_back(m);
             }
-            //cout<<"hioioioi"<<endl;
             infects.clear();
             infects.shrink_to_fit();
             //---------------------------------------------
@@ -331,9 +322,8 @@ void NSIRS::ns2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,int ln)
         }
         //
         avgI=sumOFf/trr;
-        //cout<<avgI<<endl;
     }else
     {
-        cout<<"SIRS stoped!"<<endl<<"avrage loop is biger than loop try."<<endl;
+        cout<<"SIRS stoped!"<<endl<<"avrage loop is larger than loop try."<<endl;
     }
 }
