@@ -55,7 +55,6 @@ void RegN::Reg2(int N, int k, iMatrix &m1, int l)
     }
     random_device rd;
     mt19937 gen(rd());  // to seed mersenne twister.
-    //uniform_real_distribution<> dist1(0, 1);
     uniform_int_distribution<> distall(0,N-1);
     int ll=0;
     do{
