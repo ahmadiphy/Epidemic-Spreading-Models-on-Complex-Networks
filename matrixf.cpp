@@ -47,7 +47,6 @@ void Matrixf::dD(int nn, iMatrix &aa)
         int ssk=0;
         for(int ll=0;ll<nn;++ll)
             ssk=ssk+aa[l][ll];
-        //kout<< l+1 <<' '<<ssk<<endl;
         kout<<l<<" "<<ssk<<endl;
     }
 }
