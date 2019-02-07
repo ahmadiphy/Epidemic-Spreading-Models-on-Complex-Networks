@@ -29,7 +29,6 @@ void SI::ECheck_SI(int llnn, iMatrix &ac)
     int iii=0;
     for(int ii=0;ii<rr;++ii)
     {
-        //---------------------------------------------
         int isize=infects.size();
         for(int m=iii;m<isize;++m)
         {
@@ -45,7 +44,6 @@ void SI::ECheck_SI(int llnn, iMatrix &ac)
             }
         }
         iii=isize-1;
-        //---------------------------------------------
     }
     cout<<llnn<<endl;
     cout<<"infs:"<<infects.size()<<"**"<<infects.capacity()<<endl;
