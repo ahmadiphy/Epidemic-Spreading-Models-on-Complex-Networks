@@ -1,7 +1,5 @@
 #include "wsn.h"
-//
 using namespace std;
-//
 void WSn::WSnetwork(double reW, int Z, int nn, iMatrix& aa)
 {
     random_device rd;
