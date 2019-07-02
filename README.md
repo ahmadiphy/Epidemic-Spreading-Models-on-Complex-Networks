@@ -1,5 +1,5 @@
 # Epidemic-Spreading-Models-on-Complex-Networks
-##(DEVELOPING...)
+## (DEVELOPING...)
 <br>
 (SI,SIS,SIRS) Epidemic Spreading Models on Complex Networks
 <br>
