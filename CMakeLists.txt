@@ -2,11 +2,9 @@ project(ESMs_on_complex_networks)
 cmake_minimum_required(VERSION 2.8)
 
 include_directories(include)
-aux_source_directory(./src SRC_LIST)
-add_executable(${PROJECT_NAME} ${SRC_LIST})
-find_package(OpenMP)
-if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif()
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -fopenmp")
+file(GLOB SOURCES "src/*.cpp")
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
+#Set the location for library installation -- i.e., /usr/lib in this case
+# not really necessary in this example. Use "sudo make install" to apply
+install(TARGETS testStudent DESTINATION /usr/lib)
+
