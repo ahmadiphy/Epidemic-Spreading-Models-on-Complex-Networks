@@ -1,145 +1,146 @@
+//A simple SIRS model
 #include "sirs.h"
 #include "matrixf.h"
 using namespace::std;
 SIRS::SIRS()
 {
-    avgI=0;
+    avgI = 0;
 }
 //
 //
-void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,int ln)
+void SIRS::NSLdynamic2(int rr, double probAlpha,int llnn, iMatrix &aa, int trr, int ln)
 {
-    act=0;
-    if(trr<rr)
+    act = 0;
+    if(trr < rr)
     {
-        double sumOFf=0;
+        double sumOFf = 0;
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        uniform_int_distribution<> distall(0,llnn-1);
+        uniform_int_distribution<> distall(0, llnn-1);
         ostringstream fns;
         vector<int> dy1(llnn);
         vector<int> dy2(llnn);
         vector<double> vdeg(llnn);
         vector<double> xi(llnn);
         Matrixf mat1;
-        mat1.vDeg(llnn,vdeg,aa);
+        mat1.vDeg(llnn, vdeg, aa);
 #pragma omp parallel
         {
 #pragma omp for
-            for(int i=0;i<llnn;++i)
+            for(int i=0; i<llnn; ++i)
             {
-                dy1[i]=0;
-                dy2[i]=0;
+                dy1[i] = 0;
+                dy2[i] = 0;
             }
         }
-        int c1=0,cr=0;
+        int c1=0, cr=0;
         do{
-            c1=distall(gen);
-            if(dy1[c1]==0)
+            c1 = distall(gen);
+            if(dy1[c1] == 0)
             {
-                dy1[c1]=1;
+                dy1[c1] = 1;
                 cr++;
             }
-        }while (cr<1);
+        }while (cr < 1);
 
         //
-        fns<<"./data/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
-        ofstream out1(fns.str().c_str(),ios_base::binary);
-        int isum=0,isumr=0,isums=0;
-        for(int ii=0;ii<rr;++ii)
+        fns << "./data/infection_fraction_" << rr << "_" << probAlpha << "_ans" << ln << ".dat";
+        ofstream out1(fns.str().c_str(), ios_base::binary);
+        int isum=0, isumr=0, isums=0;
+        for(int ii=0; ii<rr; ++ii)
         {
-            act=ii;
+            act = ii;
             //
 
 #pragma omp parallel
             {
 #pragma omp for
-                for(int ix=0;ix<llnn;++ix)
+                for(int ix=0; ix<llnn; ++ix)
                 {
-                    xi[ix]=0;
-                    for(int jx=0;jx<llnn;++jx)
+                    xi[ix] = 0;
+                    for(int jx=0; jx<llnn; ++jx)
                     {
                         if(aa[ix][jx]==1 && dy1[jx]==1)
-                            xi[ix]=xi[ix]+1;
+                            xi[ix] = xi[ix] + 1;
                     }
-                    xi[ix]=(xi[ix]/vdeg[ix]);
+                    xi[ix] = (xi[ix]/vdeg[ix]);
                 }
             }
-            double var=0;
-            var=mat1.varianceVec(llnn,vdeg);
-            isum=0,isumr=0,isums=0;
+            double var = 0;
+            var = mat1.varianceVec(llnn, vdeg);
+            isum=0, isumr=0, isums=0;
             vector<double> probel(llnn);
 #pragma omp parallel
             {
 #pragma omp for
-                for(int m=0;m<llnn;++m)
+                for(int m=0; m<llnn; ++m)
                 {
-                    if(dy1[m]==0)
+                    if(dy1[m] == 0)
                     {
 
-                        probel[m]=0;
-                        probel[m]=dist1(gen);
-                        double lprob=0,pval=0; //probebality of infection
-                        pval=-1*(pow((xi[m]-probAlpha),2))/(2*var);
-                        lprob=exp(pval);
-                        if(probel[m]<lprob)
+                        probel[m] = 0;
+                        probel[m] = dist1(gen);
+                        double lprob=0, pval=0; //probebality of infection transmition
+                        pval = -1 * (pow((xi[m] - probAlpha), 2)) / (2*var);
+                        lprob = exp(pval);
+                        if(probel[m] < lprob)
                         {
-                            dy2[m]=1;
+                            dy2[m] = 1;
                         }
                     }
                 }
 
             }
             //---------------------------------------------
-            for(int kk=0;kk<llnn;++kk)
+            for(int kk=0; kk<llnn; ++kk)
             {
-                if(dy1[kk]>0)
+                if(dy1[kk] > 0)
                     dy1[kk]++;
-                if(dy1[kk]==0)
-                    dy1[kk]=dy1[kk]+dy2[kk];
-                dy2[kk]=0;
-                if(dy1[kk]>=4)
-                    dy1[kk]=0;
-                if(dy1[kk]==1)
+                if(dy1[kk] == 0)
+                    dy1[kk] = dy1[kk] + dy2[kk];
+                dy2[kk] = 0;
+                if(dy1[kk] >= 4)
+                    dy1[kk] = 0;
+                if(dy1[kk] == 1)
                 {
-                    isum=isum+1;
+                    isum = isum + 1;
                 }
             }
-            double f1=0,f2=0,f3=0;
-            f1=isum;
-            f2=llnn;
-            f3=f1/f2;
-            if(f3==0)
+            double f1=0, f2=0, f3=0;
+            f1 = isum;
+            f2 = llnn;
+            f3 = f1 / f2;
+            if (f3 == 0)
             {
-                avgI=0;
-                sumOFf=0;
-                ii=rr;
+                avgI = 0;
+                sumOFf = 0;
+                ii = rr;
                 break;
             }
-            int um=rr-trr;
+            int um = rr-trr;
             if(ii >= um)
-                sumOFf=sumOFf+f3;
-            out1<< ii+1 <<' '<<f3<<endl;
+                sumOFf = sumOFf + f3;
+            out1 << ii+1 << ' ' << f3 << endl;
         }
-        avgI=sumOFf/trr;
+        avgI = sumOFf / trr;
     }else
     {
-        cout<<"SIRS stoped!"<<endl<<"avrage loop is biger than loop try."<<endl;
+        cout << "SIRS stoped!" << endl << "avrage loop is biger than loop try." << endl;
     }
 }
 //
 //
-void SIRS::NSLdynamic1(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,int ln)
+void SIRS::NSLdynamic1(int rr, double probAlpha,int llnn, iMatrix &aa, int trr, int ln)
 {
-    act=0;
-    if(trr<rr)
+    act = 0;
+    if(trr < rr)
     {
-        double sumOFf=0;
+        double sumOFf = 0;
         random_device rd;
         mt19937 gen(rd());  // to seed mersenne twister.
         uniform_real_distribution<> dist1(0, 1);
-        uniform_int_distribution<> distall(0,llnn-1);
+        uniform_int_distribution<> distall(0, llnn-1);
         ostringstream fns;//
         vector<int> dy1(llnn);
         vector<int> dy2(llnn);
@@ -149,150 +150,150 @@ void SIRS::NSLdynamic1(int rr, double probAlpha,int llnn, iMatrix &aa,int trr,in
 #pragma omp parallel
         {
 #pragma omp for
-            for(int i=0;i<llnn;++i)
+            for(int i=0; i<llnn; ++i)
             {
-                dy1[i]=0;
-                dy2[i]=0;
+                dy1[i] = 0;
+                dy2[i] = 0;
             }
         }
-        int c1=0,cr=0;
+        int c1=0, cr=0;
         do{
-            c1=distall(gen);
-            if(dy1[c1]==0)
+            c1 = distall(gen);
+            if(dy1[c1] == 0)
             {
-                dy1[c1]=1;
+                dy1[c1] = 1;
                 cr++;
             }
-        }while (cr<1);
+        }while (cr < 1);
 
         //
-        fns<<"./data/infection_fraction_"<<rr<<"_"<<probAlpha<<"_ans"<<ln<<".dat";
-        ofstream out1(fns.str().c_str(),ios_base::binary);
-        int isum=0,isumr=0,isums=0;
-        for(int ii=0;ii<rr;++ii)
+        fns << "./data/infection_fraction_" << rr << "_" << probAlpha << "_ans" << ln << ".dat";
+        ofstream out1(fns.str().c_str(), ios_base::binary);
+        int isum=0, isumr=0, isums=0;
+        for(int ii=0; ii<rr; ++ii)
         {
-            act=ii;
-            isum=0,isumr=0,isums=0;
+            act = ii;
+            isum=0, isumr=0, isums=0;
             vector<double> probel(llnn); //---------------------------------------------
 #pragma omp parallel
             {
 #pragma omp for
-                for(int m=0;m<llnn;++m)
+                for(int m=0; m<llnn; ++m)
                 {
-                    if(dy1[m]==0)
+                    if(dy1[m] == 0)
                     {
                         int deg_a=0;
-                        for(int j=0;j<llnn;j++)
+                        for(int j=0; j<llnn; j++)
                         {
                             if(dy1[j]==1 && aa[m][j]==1)
                             {
                                 deg_a++;
                             }
                         }
-                        double d3=0,d1=deg_a,d2=vdeg[m];
-                        d3=d1/d2;
-                        probel[m]=0;
-                        probel[m]=dist1(gen);
-                        if(probel[m]<(d3/2+probAlpha/2))
+                        double d3=0, d1=deg_a, d2=vdeg[m];
+                        d3 = d1 / d2;
+                        probel[m] = 0;
+                        probel[m] = dist1(gen);
+                        if(probel[m] < (d3/2+probAlpha/2))
                         {
-                            dy2[m]=1;
+                            dy2[m] = 1;
                         }
                     }
                 }
 
             }
             //---------------------------------------------
-            for(int kk=0;kk<llnn;++kk)
+            for(int kk=0; kk<llnn; ++kk)
             {
-                if(dy1[kk]>0)
+                if(dy1[kk] > 0)
                     dy1[kk]++;
-                if(dy1[kk]==0)
-                    dy1[kk]=dy1[kk]+dy2[kk];
-                dy2[kk]=0;
-                if(dy1[kk]>=4)
-                    dy1[kk]=0;
-                if(dy1[kk]==1)
+                if(dy1[kk] == 0)
+                    dy1[kk] = dy1[kk] + dy2[kk];
+                dy2[kk] = 0;
+                if(dy1[kk] >= 4)
+                    dy1[kk] = 0;
+                if(dy1[kk] == 1)
                 {
-                    isum=isum+1;
+                    isum = isum + 1;
                 }
             }
             //
-            double f1=0,f2=0,f3=0;
-            f1=isum;
-            f2=llnn;
-            f3=f1/f2;
-            if(f3==0)
+            double f1=0, f2=0, f3=0;
+            f1 = isum;
+            f2 = llnn;
+            f3 = f1 / f2;
+            if(f3 == 0)
             {
-                avgI=0;
-                sumOFf=0;
-                ii=rr;
+                avgI = 0;
+                sumOFf = 0;
+                ii = rr;
                 break;
             }
-            int um=rr-trr;
+            int um = rr - trr;
             if(ii >= um)
-                sumOFf=sumOFf+f3;
-            out1<< ii+1 <<' '<<f3<<endl;
+                sumOFf = sumOFf + f3;
+            out1 << ii+1 << ' ' << f3 << endl;
         }
-        avgI=sumOFf/trr;
+        avgI = sumOFf / trr;
     }else
     {
-        cout<<"SIRS stoped!"<<endl<<"avrage loop is biger than loop try."<<endl;
+        cout << "SIRS stoped!" << endl << "avrage loop is biger than loop try." << endl;
     }
 }
 //
 //
-void SIRS::Sdynamic(int rr, double probAlpha,int llnn, iMatrix &aa)
+void SIRS::Sdynamic(int rr, double probAlpha, int llnn, iMatrix &aa)
 {
-    double usep=1-probAlpha;
+    double usep = 1-probAlpha;
     random_device rd;
     mt19937 gen(rd());  // to seed mersenne twister.
     uniform_real_distribution<> dist1(0, 1);
-    uniform_int_distribution<> distall(0,llnn-1);
+    uniform_int_distribution<> distall(0, llnn-1);
     ostringstream fn;
     iMatrix dy(llnn, iRow(2));
     vector<int> infects;
     vector<int> recovers;
     vector<int> resus;
-    for(int i=0;i<llnn;++i)
+    for(int i=0; i<llnn; ++i)
     {
-        dy[i][0]=0;
-        dy[i][1]=0;
+        dy[i][0] = 0;
+        dy[i][1] = 0;
     }
-    int ksum=0;
-    int c1=0;
+    int ksum = 0;
+    int c1 = 0;
     do{
-        c1=0;
-        c1=distall(gen);
-        if(dy[c1][0]==0)
+        c1 = 0;
+        c1 = distall(gen);
+        if(dy[c1][0] == 0)
         {
-            dy[c1][0]=1;
+            dy[c1][0] = 1;
             infects.push_back(c1);
             ksum++;
         }
-    }while(ksum<10);
+    }while(ksum < 10);
     //
-    fn<<"./infection_fraction"<<rr<<"_"<<probAlpha<<".dat";
-    ofstream out1(fn.str().c_str(),ios_base::binary);
+    fn << "./infection_fraction" << rr << "_" << probAlpha << ".dat";
+    ofstream out1(fn.str().c_str(), ios_base::binary);
     //
-    int isum=0;
-    for(int ii=0;ii<rr;++ii)
+    int isum = 0;
+    for(int ii=0; ii<rr; ++ii)
     {
-        cout<<ii<<endl;
-        isum=0;
+        cout << ii << endl;
+        isum = 0;
 
         //---------------------------------------------
-        for(int m=0;m<infects.size();++m)
+        for(int m=0; m<infects.size(); ++m)
         {
-            int mm=infects[m];
-            for(int j=0;j<llnn;j++)
+            int mm = infects[m];
+            for(int j=0; j<llnn; j++)
             {
                 if(aa[mm][j]==1 && dy[j][0]==0)
                 {
                     double c2p=0;
-                    c2p=dist1(gen);
-                    if(c2p>usep)
+                    c2p = dist1(gen);
+                    if(c2p > usep)
                     {
-                        dy[j][0]=1;
+                        dy[j][0] = 1;
                         infects.push_back(j);
                     }
                 }
