@@ -1,4 +1,6 @@
-//A class to generate ER random networks
+//--------------------------------------------------------
+//A class to generate ER random networks.
+//--------------------------------------------------------
 #include "ern.h"
 //
 using namespace::std;
