@@ -1,4 +1,4 @@
-//A class to simulate new spreading dynamic
+//A class to simulate new SIRS spreading dynamic
 #include "newdy.h"
 
 NewDy::NewDy()
@@ -26,7 +26,6 @@ void NewDy::D00(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa
             infects.push_back(i);
 
         }
-        //=============================================================
         fn << "./data/" << net << "/" << probAlpha << "/infection_fraction_" << rr << "_" << probAlpha << "_netE" << net << "_landaE" << ln << ".dat";
         ofstream out1(fn.str().c_str(), ios_base::binary);
         //
@@ -77,8 +76,6 @@ void NewDy::D00(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa
                 suss.clear();
                 suss.shrink_to_fit();
             }
-            //---------------------------------------------
-            //---------------------------------------------
             isum=infects.size();
             double f1 = 0, f2 = 0, f3 = 0;
             f1 = isum;
@@ -104,7 +101,7 @@ void NewDy::D00(int rr, double probAlpha, double probBeta, int llnn, iMatrix &aa
         cout << "SIRS stoped!" << endl << "avrage loop is biger than loop try." <<endl;
     }
 }
-//
+
 double NewDy::get_avgI()
 {
     return avgI;
